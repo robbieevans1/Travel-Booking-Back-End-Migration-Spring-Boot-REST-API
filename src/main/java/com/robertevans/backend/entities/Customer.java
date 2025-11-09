@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -51,5 +52,16 @@ public class Customer {
 
     public Customer() {
 
+    }
+
+    public void add(Cart cart) {
+
+        if (cart != null){
+            if (carts == null){
+                carts = new HashSet<>();
+            }
+            carts.add(cart);
+            cart.setCustomer(this);
+        }
     }
 }
