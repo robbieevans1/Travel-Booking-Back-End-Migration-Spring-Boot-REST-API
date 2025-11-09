@@ -24,11 +24,11 @@ public class Division {
 
     @Column(name = "create_date")
     @CreationTimestamp
-    private Date createDate;
+    private Date create_date;
 
     @Column(name = "last_update")
     @UpdateTimestamp
-    private Date lastUpdate;
+    private Date last_update;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id", nullable = false, insertable = false, updatable = false)

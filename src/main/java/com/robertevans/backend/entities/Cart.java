@@ -36,18 +36,18 @@ public class Cart {
 
     @Column(name = "create_date")
     @CreationTimestamp
-    private Date createDate;
+    private Date create_date;
 
     @Column(name = "last_update")
     @UpdateTimestamp
-    private Date lastUpdate;
+    private Date last_update;
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart")
-    private Set<CartItem> cartItem;
+    private Set<CartItem> cartItems;
 
     public Cart(){
 
@@ -56,10 +56,10 @@ public class Cart {
     public void add(CartItem item) {
 
         if (item != null){
-            if (cartItem == null){
-                cartItem = new HashSet<>();
+            if (cartItems == null){
+                cartItems = new HashSet<>();
             }
-            cartItem.add(item);
+            cartItems.add(item);
             item.setCart(this);
         }
     }

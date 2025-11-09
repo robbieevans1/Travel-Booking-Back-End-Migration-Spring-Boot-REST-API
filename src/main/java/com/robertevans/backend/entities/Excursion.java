@@ -31,11 +31,11 @@ public class Excursion {
 
     @Column(name = "create_date")
     @CreationTimestamp
-    private Date createDate;
+    private Date create_date;
 
     @Column(name = "last_update")
     @UpdateTimestamp
-    private Date lastUpdate;
+    private Date last_update;
 
     @ManyToOne
     @JoinColumn(name = "vacation_id", nullable = false)

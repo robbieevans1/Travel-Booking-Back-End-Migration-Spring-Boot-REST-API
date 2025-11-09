@@ -37,11 +37,11 @@ public class Customer {
 
     @Column(name = "create_date")
     @CreationTimestamp
-    private Date createDate;
+    private Date create_date;
 
     @Column(name = "last_update")
     @UpdateTimestamp
-    private Date lastUpdate;
+    private Date last_update;
 
     @ManyToOne
     @JoinColumn(name = "division_id", nullable = false)

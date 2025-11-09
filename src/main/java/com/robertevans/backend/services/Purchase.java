@@ -6,6 +6,7 @@ import com.robertevans.backend.entities.Customer;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -13,5 +14,5 @@ import java.util.Set;
 public class Purchase {
     private Customer customer;
     private Cart cart;
-    private Set<CartItem> cartItem;
+    private Set<CartItem> cartItems = new HashSet<>();
 }

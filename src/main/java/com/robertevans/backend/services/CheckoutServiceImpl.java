@@ -1,9 +1,12 @@
 package com.robertevans.backend.services;
 
+import com.robertevans.backend.dao.CartRepository;
 import com.robertevans.backend.dao.CustomerRepository;
 import com.robertevans.backend.entities.Cart;
 import com.robertevans.backend.entities.CartItem;
 import com.robertevans.backend.entities.Customer;
+import com.robertevans.backend.entities.StatusType;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,32 +16,37 @@ import java.util.UUID;
 @Service
 public class CheckoutServiceImpl implements CheckoutService {
 
-    private CustomerRepository customerRepository;
+    private CartRepository cartRepository;
 
     @Autowired
-    public CheckoutServiceImpl(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
+    public CheckoutServiceImpl(CartRepository cartRepository) {
+        this.cartRepository = cartRepository;
     }
 
     @Override
+    @Transactional
     public PurchaseResponse placeOrder(Purchase purchase) {
         Cart cart = purchase.getCart();
+        cart.setId(null);
+        cart.setStatus(StatusType.ordered);
 
-        if (cart==null || cart.getCartItem() == null || cart.getCartItem().isEmpty()){
-            return new PurchaseResponse("Validation constaraint Error: Cart is empty.");
-        }
 
         String orderTrackingNumber = generateOrderTrackingNumber();
         cart.setOrderTrackingNumber(orderTrackingNumber);
 
-        Set<CartItem> cartItems = purchase.getCartItem();
+        Set<CartItem> cartItems = purchase.getCartItems();
         cartItems.forEach(item -> cart.add(item));
+        cart.setCustomer(purchase.getCustomer());
 
-        Customer customer = purchase.getCustomer();
-        customer.add(cart);
+        if (cart==null || cart.getCartItems() == null || cart.getCartItems().isEmpty()){
+            return new PurchaseResponse("Validation Constraint Error: Cart is empty.");
+        }
+        else {
+            cartRepository.save(cart);
+            return new PurchaseResponse(orderTrackingNumber);
+        }
 
-        customerRepository.save(customer);
-        return new PurchaseResponse(orderTrackingNumber);
+
     }
 
     private String generateOrderTrackingNumber() {

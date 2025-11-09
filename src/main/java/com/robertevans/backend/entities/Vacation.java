@@ -35,11 +35,11 @@ public class Vacation {
 
     @Column(name = "create_date")
     @CreationTimestamp
-    private Date createDate;
+    private Date create_date;
 
     @Column(name = "last_update")
     @UpdateTimestamp
-    private Date lastUpdate;
+    private Date last_update;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "vacation")
     private Set<Excursion> excursions;
