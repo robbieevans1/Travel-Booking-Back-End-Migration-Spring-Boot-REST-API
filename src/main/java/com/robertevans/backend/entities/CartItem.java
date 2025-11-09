@@ -10,17 +10,30 @@ import java.util.Date;
 import java.util.Set;
 
 @Entity
-@Table(name = "countries")
+@Table(name = "cart_items")
 @Getter
 @Setter
-public class Country {
+public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "country_id")
+    @Column(name = "cart_item_id")
     private Long id;
 
-    @Column(name = "country")
-    private String country_name;
+    @ManyToOne
+    @JoinColumn(name = "vacation_id", nullable = false)
+    private Vacation vacation;
+
+    @ManyToMany
+    @JoinTable(
+            name = "excursion_cartitem",
+            joinColumns = @JoinColumn(name = "cart_item_id"),
+            inverseJoinColumns = @JoinColumn(name = "excursion_id")
+    )
+    private Set<Excursion> excursions;
+
+    @ManyToOne
+    @JoinColumn(name = "cart_id", nullable = false)
+    private Cart cart;
 
     @Column(name = "create_date")
     @CreationTimestamp
@@ -30,10 +43,7 @@ public class Country {
     @UpdateTimestamp
     private Date lastUpdate;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "country")
-    private Set<Division> divisions;
-
-    public Country() {
+    public CartItem() {
 
     }
 }

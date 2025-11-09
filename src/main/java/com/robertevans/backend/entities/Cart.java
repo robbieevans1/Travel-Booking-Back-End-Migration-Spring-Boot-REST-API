@@ -11,23 +11,27 @@ import java.util.Date;
 import java.util.Set;
 
 @Entity
-@Table(name = "excursions")
+@Table(name = "carts")
 @Getter
 @Setter
-public class Excursion {
+public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "excursion_id")
+    @Column(name = "cart_id")
     private Long id;
 
-    @Column(name = "excursion_title")
-    private String excursion_title;
+    @Column(name = "order_tracking_number")
+    private String orderTrackingNumber;
 
-    @Column(name = "excursion_price")
-    private BigDecimal excursion_price;
+    @Column(name = "package_price")
+    private BigDecimal package_price;
 
-    @Column(name = "image_url")
-    private String image_URL;
+    @Column(name = "party_size")
+    private int party_size;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private StatusType status;
 
     @Column(name = "create_date")
     @CreationTimestamp
@@ -38,13 +42,13 @@ public class Excursion {
     private Date lastUpdate;
 
     @ManyToOne
-    @JoinColumn(name = "vacation_id", nullable = false)
-    private Vacation vacation;
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;
 
-    @ManyToMany(mappedBy = "excursions")
-    private Set<CartItem> cartItems;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart")
+    private Set<CartItem> cartItem;
 
-    public Excursion() {
+    public Cart(){
 
     }
 }
