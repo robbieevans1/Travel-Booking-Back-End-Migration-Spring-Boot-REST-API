@@ -24,6 +24,10 @@ public class CheckoutServiceImpl implements CheckoutService {
     public PurchaseResponse placeOrder(Purchase purchase) {
         Cart cart = purchase.getCart();
 
+        if (cart==null || cart.getCartItem() == null || cart.getCartItem().isEmpty()){
+            return new PurchaseResponse("Validation constaraint Error: Cart is empty.");
+        }
+
         String orderTrackingNumber = generateOrderTrackingNumber();
         cart.setOrderTrackingNumber(orderTrackingNumber);
 
